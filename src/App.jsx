@@ -1,4 +1,4 @@
-import { ThemeProvider } from './contexts/themeContext'
+import { ThemeProvider } from './contexts/ThemeContexts'
 import PrivateRouter from './Routes/PrivateRouter'
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router"
 import LandingPage from './pages/LandingPage'
