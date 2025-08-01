@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { auth, db } from '../config/firebase';
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import Dashboard from "../pages/Dashboard";
-import StaffDashboard from "../pages/StaffDashboard";
-import AdminDashboard from "../pages/AdminDashboard";
+import Spinner from '../components/Spinner';
 import { Navigate } from "react-router";
 
+// Lazy loaded pages.
+const Dashboard = lazy(() => import('../pages/Dashboard'));
+const StaffDashboard = lazy(() => import('../pages/StaffDashboard'));
+const AdminDashboard = lazy(() => import('../pages/AdminDashboard'));
 
 const PrivateRouter = () => {
   const [loading, setLoading] = useState(true);
@@ -32,14 +34,21 @@ const PrivateRouter = () => {
 
   if (!user) return <Navigate to="/landing" replace />;
 
-  if (role === 'user') return <Dashboard />;
-  if (role === 'staff') return <StaffDashboard />;
-  if (role === 'admin') return <AdminDashboard />;
+  if (role === 'user') return <Suspense fallback={<Loader />} > <Dashboard /> </Suspense>;
+  if (role === 'staff') return <Suspense fallback={<Loader />} > <StaffDashboard /> </Suspense>;
+  if (role === 'admin') return <Suspense fallback={<Loader />} > <AdminDashboard /> </Suspense>;
 
   // Fallback
   return <Navigate to={'/landing'} />
 
 };
 
+const Loader = () => {
+  return (
+    <div className="h-screen w-screen flex justify-center items-center dark:bg-zinc-800 dark:text-zinc-50">
+      <Spinner />
+    </div>
+  )
+};
 
 export default PrivateRouter;
