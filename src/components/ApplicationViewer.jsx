@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, lazy } from 'react';
 import { useParams } from 'react-router'
 import { fetchRequest } from '../APIs/user';
 import Spinner from './Spinner';
 import { auth } from '../config/firebase';
-import { Download, PrinterCheckIcon } from 'lucide-react';
-import generatePDF from 'react-to-pdf';
+import { Download } from 'lucide-react';
+
+const generatePDF = lazy(() => import('react-to-pdf'));
 
 const ApplicationViewer = () => {
 
@@ -76,7 +77,7 @@ const ApplicationViewer = () => {
                             <p className='text-right underline px-2 py-4'>{reqData?.status}</p>
 
                         </div>
-                        <button onClick={() => generatePDF(contentRef)} className=' py-2 hover:scale-105 transition-transform cursor-pointer'><Download /></button>
+                        <button onClick={() => generatePDF(contentRef, { filename: `${reqData?.formData?.service}.pdf` })} className=' py-2 hover:scale-105 transition-transform cursor-pointer'><Download /></button>
                     </> :
                     <Spinner />
                 }
