@@ -1,5 +1,5 @@
 import { CircleUserRound, Loader2, MoonStarIcon, SunIcon } from "lucide-react"
-import { useTheme } from "../contexts/themeContext";
+import { useTheme } from "../contexts/ThemeContexts";
 import { useEffect, useRef, useState } from "react";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
